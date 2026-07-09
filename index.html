@@ -233,14 +233,21 @@
     cursor:pointer;
   }
   .video-go:active{transform:scale(0.94);}
+  .video-status{
+    font-size:9.5px;
+    color:var(--ink-soft);
+    margin-top:4px;
+    min-height:12px;
+  }
+  .video-status.ok{color:#4C7A5A;}
+  .video-status.erro{color:var(--right);}
 
   .ex-log-row{
     display:flex;
     align-items:center;
     gap:8px;
     margin-top:10px;
-    padding-top:10px;
-    border-top:1px solid var(--line);
+    padding-top:10px;    border-top:1px solid var(--line);
   }
   .ex-log-row span.label{
     font-size:9.5px;
@@ -317,7 +324,7 @@
     <div class="rule-note">
       <strong>Regra de assimetria:</strong> déficit de glúteo médio/máximo à direita (Trendelenburg+, Elevação Pélvica Unilateral D 9× / E 11×). Exercícios marcados <span class="side-tag d">+D</span> recebem 1 série extra do lado direito. Manter coluna neutra em todos os levantamentos.
     </div>
-    <p class="hint">Toque no ▶ para colar e assistir o vídeo do exercício (o link fica salvo). Toque nos quadrados pra marcar as séries feitas na semana.</p>
+    <p class="hint">Toque no ▶ para colar e assistir o vídeo do exercício — o link fica salvo pra todo mundo que acessar essa ficha. Toque nos quadrados pra marcar as séries feitas na semana (isso fica salvo só no seu aparelho).</p>
 
     <!-- SEGUNDA -->
     <section class="day-section active" id="dia-seg">
@@ -333,6 +340,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -345,6 +353,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -357,6 +366,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -369,6 +379,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -381,6 +392,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-5"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -401,6 +413,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -413,6 +426,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -425,6 +439,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -437,6 +452,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -457,6 +473,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -469,6 +486,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -479,8 +497,9 @@
             <p class="ex-name">Box drop baixa altura — foco na aterrissagem</p>
             <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">5 reps</span><span class="meta-chip rest">Descanso 90s</span></div>
           </div>
-        </div>
+        </div>        </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -493,6 +512,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -513,6 +533,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -525,6 +546,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -537,6 +559,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -549,6 +572,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -569,6 +593,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -581,6 +606,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -593,6 +619,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -605,6 +632,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -617,6 +645,7 @@
           </div>
         </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-5"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
       </div>
 
@@ -630,6 +659,11 @@
 </div>
 
 <script>
+  // ============================================================
+  // COLE AQUI A URL DO GOOGLE APPS SCRIPT (Web App) DE VÍDEOS
+  // ============================================================
+  const API_VIDEOS_URL = "https://script.google.com/macros/s/AKfycbx72dJifceCtbtQp6JUTdWrhGC7-hV7YivrzqwhB827gpe_AJMvDcHTQAu2BGTpkZvejQ/exec";
+
   function mostrarDia(dia, btn){
     document.querySelectorAll('.day-section').forEach(function(s){s.classList.remove('active');});
     document.getElementById('dia-' + dia).classList.add('active');
@@ -638,29 +672,63 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
-  // Vídeos: salvar e recuperar do navegador
+  // Vídeos: carregar da planilha compartilhada (todo mundo vê o mesmo)
+  async function carregarVideos(){
+    try{
+      const res = await fetch(API_VIDEOS_URL);
+      const data = await res.json();
+      const videos = data.videos || {};
+      document.querySelectorAll('.video-input').forEach(function(input){
+        const url = videos[input.dataset.vid];
+        if(url){ input.value = url; }
+      });
+    }catch(err){
+      // Sem conexão com a planilha ainda configurada — os campos ficam vazios até salvar.
+      console.warn('Não foi possível carregar os vídeos salvos.', err);
+    }
+  }
+
+  async function salvarVideoNaPlanilha(vid, url, statusEl){
+    if(statusEl){ statusEl.textContent = 'Salvando...'; statusEl.className = 'video-status'; }
+    try{
+      const res = await fetch(API_VIDEOS_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action:'salvar', vid, url })
+      });
+      const data = await res.json();
+      if(data.ok){
+        if(statusEl){ statusEl.textContent = 'Salvo ✓'; statusEl.className = 'video-status ok'; setTimeout(()=>{statusEl.textContent='';}, 2000); }
+      }else{
+        if(statusEl){ statusEl.textContent = data.erro || 'Erro ao salvar'; statusEl.className = 'video-status erro'; }
+      }
+    }catch(err){
+      if(statusEl){ statusEl.textContent = 'Erro de conexão'; statusEl.className = 'video-status erro'; }
+    }
+  }
+
   document.querySelectorAll('.video-input').forEach(function(input){
-    var key = 'beachmed-video-' + input.dataset.vid;
-    var saved = localStorage.getItem(key);
-    if(saved){ input.value = saved; }
     input.addEventListener('change', function(){
-      localStorage.setItem(key, input.value.trim());
+      const statusEl = input.closest('.ex-card').querySelector('.video-status');
+      salvarVideoNaPlanilha(input.dataset.vid, input.value.trim(), statusEl);
     });
   });
 
   function abrirVideo(el){
-    var row = el.closest('.ex-card').querySelector('.video-input');
-    var url = row.value.trim();
+    const card = el.closest('.ex-card');
+    const row = card.querySelector('.video-input');
+    const statusEl = card.querySelector('.video-status');
+    let url = row.value.trim();
     if(!url){
       row.focus();
       return;
     }
-    localStorage.setItem('beachmed-video-' + row.dataset.vid, url);
+    salvarVideoNaPlanilha(row.dataset.vid, url, statusEl);
     if(!/^https?:\/\//i.test(url)){ url = 'https://' + url; }
     window.open(url, '_blank');
   }
 
-  // Log de séries: salvar estado dos quadrados marcados
+  // Log de séries: continua salvo só neste aparelho (progresso pessoal do atleta)
   document.querySelectorAll('.log-dot').forEach(function(dot, i){
     var card = dot.closest('.ex-card');
     var name = card.querySelector('.video-input').dataset.vid;
@@ -676,7 +744,12 @@
     var key = 'beachmed-log-' + name + '-' + idx;
     localStorage.setItem(key, dot.classList.contains('checked') ? '1' : '0');
   }
+
+  carregarVideos();
 </script>
 
 </body>
 </html>
+
+
+
