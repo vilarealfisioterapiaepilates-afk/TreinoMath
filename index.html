@@ -247,7 +247,8 @@
     align-items:center;
     gap:8px;
     margin-top:10px;
-    padding-top:10px;    border-top:1px solid var(--line);
+    padding-top:10px;
+    border-top:1px solid var(--line);
   }
   .ex-log-row span.label{
     font-size:9.5px;
@@ -497,7 +498,7 @@
             <p class="ex-name">Box drop baixa altura — foco na aterrissagem</p>
             <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">5 reps</span><span class="meta-chip rest">Descanso 90s</span></div>
           </div>
-        </div>        </div>
+        </div>
         <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
         <div class="video-status"></div>
         <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
@@ -675,7 +676,7 @@
   // Vídeos: carregar da planilha compartilhada (todo mundo vê o mesmo)
   async function carregarVideos(){
     try{
-      const res = await fetch(API_VIDEOS_URL);
+      const res = await fetch(API_VIDEOS_URL + '?t=' + Date.now(), { cache: 'no-store' });
       const data = await res.json();
       const videos = data.videos || {};
       document.querySelectorAll('.video-input').forEach(function(input){
@@ -750,6 +751,3 @@
 
 </body>
 </html>
-
-
-
