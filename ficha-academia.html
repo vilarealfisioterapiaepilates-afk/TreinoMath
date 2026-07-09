@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEACHMED — Ficha de Academia</title>
+<style>
+  :root{
+    --ink:#1F2326;
+    --ink-soft:#5B6167;
+    --sand:#C9A876;
+    --sand-light:#E9DFC8;
+    --sand-pale:#F6F1E6;
+    --line:#E4DCC9;
+    --right:#B4552F;
+    --card:#FFFFFF;
+    --bg:#F1ECE0;
+    --shadow:0 2px 10px rgba(31,35,38,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);box-shadow:0 0 40px rgba(0,0,0,0.06);}
+
+  /* App bar */
+  header.appbar{
+    background:var(--ink);
+    color:var(--sand-pale);
+    padding:22px 18px 16px;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .eyebrow{
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--sand);
+    margin:0 0 6px;
+    font-weight:700;
+  }
+  header.appbar h1{
+    margin:0 0 4px;
+    font-size:22px;
+    font-weight:800;
+  }
+  header.appbar p{
+    margin:0;
+    font-size:12px;
+    color:#C9C2B2;
+    line-height:1.45;
+  }
+
+  /* Day tabs */
+  nav.day-tabs{
+    display:flex;
+    gap:6px;
+    padding:10px 12px;
+    background:var(--ink);
+    position:sticky;
+    top:78px;
+    z-index:9;
+    overflow-x:auto;
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+  }
+  nav.day-tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:1;
+    min-width:64px;
+    background:rgba(255,255,255,0.06);
+    color:#C9C2B2;
+    border:none;
+    border-radius:20px;
+    padding:9px 4px;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.02em;
+    cursor:pointer;
+    text-align:center;
+  }
+  .tab-btn.active{
+    background:var(--sand);
+    color:var(--ink);
+  }
+
+  .content{padding:16px 14px 40px;}
+
+  .rule-note{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--right);
+    border-radius:10px;
+    margin:0 0 12px;
+    padding:13px 15px;
+    font-size:12.5px;
+    line-height:1.55;
+    box-shadow:var(--shadow);
+  }
+  .rule-note strong{color:var(--right);}
+
+  .hint{
+    font-size:11px;
+    color:var(--ink-soft);
+    margin:0 0 18px;
+    padding:0 2px;
+  }
+
+  .day-section{display:none;}
+  .day-section.active{display:block;}
+
+  .day-title-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .day-title-row h2{
+    font-size:18px;
+    margin:0;
+    font-weight:800;
+  }
+  .rest-chip{
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--right);
+    background:rgba(180,85,47,0.1);
+    padding:4px 9px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .day-focus{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:2px 0 16px;
+    font-style:italic;
+  }
+
+  /* Exercise card */
+  .ex-card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:13px 14px;
+    margin-bottom:12px;
+  }
+  .ex-top{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .ex-thumb{
+    flex-shrink:0;
+    width:44px;height:44px;
+    border-radius:10px;
+    background:var(--ink);
+    color:var(--sand);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    cursor:pointer;
+    border:none;
+  }
+  .ex-thumb:active{transform:scale(0.94);}
+  .ex-info{flex:1;min-width:0;}
+  .ex-name{
+    font-size:14.5px;
+    font-weight:700;
+    margin:0 0 3px;
+    line-height:1.3;
+  }
+  .side-tag{
+    display:inline-block;
+    font-size:9.5px;
+    font-weight:800;
+    padding:1px 6px;
+    margin-left:5px;
+    border-radius:4px;
+    background:rgba(180,85,47,0.14);
+    color:var(--right);
+    vertical-align:middle;
+  }
+  .ex-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+  .meta-chip{
+    background:var(--sand-pale);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:2px 7px;
+  }
+  .meta-chip.rest{
+    background:rgba(180,85,47,0.08);
+    color:var(--right);
+    font-weight:700;
+    border-color:transparent;
+  }
+
+  .ex-video-row{
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+  }
+  .video-input{
+    flex:1;
+    min-width:0;
+    border:1px solid var(--line);
+    background:var(--sand-pale);
+    border-radius:7px;
+    font-size:11.5px;
+    padding:7px 9px;
+    color:var(--ink);
+  }
+  .video-input::placeholder{color:#A79E8A;}
+  .video-go{
+    flex-shrink:0;
+    width:34px;
+    border:none;
+    border-radius:7px;
+    background:var(--ink);
+    color:var(--sand);
+    font-size:11px;
+    cursor:pointer;
+  }
+  .video-go:active{transform:scale(0.94);}
+
+  .ex-log-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid var(--line);
+  }
+  .ex-log-row span.label{
+    font-size:9.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .log-dot{
+    width:20px;height:20px;
+    border-radius:5px;
+    border:1.5px solid var(--line);
+    background:var(--sand-pale);
+    cursor:pointer;
+  }
+  .log-dot.checked{
+    background:var(--right);
+    border-color:var(--right);
+  }
+
+  .day-footer{margin-top:6px;margin-bottom:8px;}
+  .day-footer div{
+    background:var(--card);
+    border-radius:10px;
+    padding:11px 13px;
+    font-size:11.5px;
+    box-shadow:var(--shadow);
+  }
+  .day-footer label{
+    display:block;
+    font-size:9.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .day-footer .fill-line{
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;width:100%;font-size:13px;padding:2px 0;
+  }
+
+  footer.credits{
+    text-align:center;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    padding:20px 14px 26px;
+  }
+
+  @media print{
+    nav.day-tabs, header.appbar{position:static;}
+    .day-section{display:block !important;page-break-before:always;}
+    .ex-video-row{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="appbar">
+    <p class="eyebrow">BeachMed · Preparação Física</p>
+    <h1>Ficha de Academia</h1>
+    <p>Beach Soccer · Pivô · 19 anos — treino complementar ao trabalho clínico. Sem exercícios até a fadiga.</p>
+  </header>
+
+  <nav class="day-tabs">
+    <button class="tab-btn active" data-day="seg" onclick="mostrarDia('seg', this)">SEG</button>
+    <button class="tab-btn" data-day="ter" onclick="mostrarDia('ter', this)">TER</button>
+    <button class="tab-btn" data-day="qua" onclick="mostrarDia('qua', this)">QUA</button>
+    <button class="tab-btn" data-day="qui" onclick="mostrarDia('qui', this)">QUI</button>
+    <button class="tab-btn" data-day="sex" onclick="mostrarDia('sex', this)">SEX</button>
+  </nav>
+
+  <div class="content">
+
+    <div class="rule-note">
+      <strong>Regra de assimetria:</strong> déficit de glúteo médio/máximo à direita (Trendelenburg+, Elevação Pélvica Unilateral D 9× / E 11×). Exercícios marcados <span class="side-tag d">+D</span> recebem 1 série extra do lado direito. Manter coluna neutra em todos os levantamentos.
+    </div>
+    <p class="hint">Toque no ▶ para colar e assistir o vídeo do exercício (o link fica salvo). Toque nos quadrados pra marcar as séries feitas na semana.</p>
+
+    <!-- SEGUNDA -->
+    <section class="day-section active" id="dia-seg">
+      <div class="day-title-row"><h2>Isométricos &amp; Estabilidade</h2><span class="rest-chip">Descanso ~30–40s</span></div>
+      <p class="day-focus">Regenerativo — baixo custo neural, sem impacto.</p>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Wall sit bipodal</p>
+            <div class="ex-meta"><span class="meta-chip">3–4x</span><span class="meta-chip">30–45s</span><span class="meta-chip rest">Descanso 30–40s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Prancha lateral com quadril elevado <span class="side-tag d">+D</span></p>
+            <div class="ex-meta"><span class="meta-chip">3x (D: 4x)</span><span class="meta-chip">20–30s/lado</span><span class="meta-chip rest">Descanso 30–40s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Ponte de glúteo isométrica c/ faixa acima do joelho</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">20–30s</span><span class="meta-chip rest">Descanso 30–40s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Prancha frontal c/ toque alternado de ombro</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">30–40s</span><span class="meta-chip rest">Descanso 30–40s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Isometria em meio-agachamento unilateral (leg press) <span class="side-tag d">+D</span></p>
+            <div class="ex-meta"><span class="meta-chip">3x (D: 4x)</span><span class="meta-chip">20s/lado</span><span class="meta-chip rest">Descanso 30–40s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="seg-5"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="day-footer"><div><label>Observações / dor</label><input class="fill-line" type="text"></div></div>
+    </section>
+
+    <!-- TERÇA -->
+    <section class="day-section" id="dia-ter">
+      <div class="day-title-row"><h2>Excêntrico Pesado</h2><span class="rest-chip">Descanso ~90–120s</span></div>
+      <p class="day-focus">Progressivo — reforço pós-estiramento grau 1 de quadríceps D. Parar se dor &gt; 3/10 na fase excêntrica.</p>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Agachamento tempo excêntrico 4s (leg press / barra)</p>
+            <div class="ex-meta"><span class="meta-chip">4x</span><span class="meta-chip">6–8 reps</span><span class="meta-chip rest">Descanso 90–120s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Afundo búlgaro excêntrico (3s descida)</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">8 reps/lado</span><span class="meta-chip rest">Descanso 90s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Leg press unilateral excêntrico <span class="side-tag d">+D</span></p>
+            <div class="ex-meta"><span class="meta-chip">3x (D: 4x)</span><span class="meta-chip">8 reps/lado</span><span class="meta-chip rest">Descanso 90s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">RDL tempo excêntrico 3–4s</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">8 reps</span><span class="meta-chip rest">Descanso 90–120s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="ter-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="day-footer"><div><label>EVA fase excêntrica (D)</label><input class="fill-line" type="text"></div></div>
+    </section>
+
+    <!-- QUARTA -->
+    <section class="day-section" id="dia-qua">
+      <div class="day-title-row"><h2>Pliometria</h2><span class="rest-chip">Descanso ~60–90s</span></div>
+      <p class="day-focus">Baixo–moderado volume. Progredir intensidade só com aterrissagem limpa, sem colapso em valgo.</p>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Squat jump — aterrissagem controlada</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">5 reps</span><span class="meta-chip rest">Descanso 60–90s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Skater jump baixa amplitude <span class="side-tag d">+D</span></p>
+            <div class="ex-meta"><span class="meta-chip">3x (D: 4x)</span><span class="meta-chip">6 reps/lado</span><span class="meta-chip rest">Descanso 60–90s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Box drop baixa altura — foco na aterrissagem</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">5 reps</span><span class="meta-chip rest">Descanso 90s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Salto unilateral vertical (só se técnica limpa/sem dor)</p>
+            <div class="ex-meta"><span class="meta-chip">2x</span><span class="meta-chip">4 reps/lado</span><span class="meta-chip rest">Descanso 90s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qua-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="day-footer"><div><label>Qualidade da aterrissagem (D)</label><input class="fill-line" type="text"></div></div>
+    </section>
+
+    <!-- QUINTA -->
+    <section class="day-section" id="dia-qui">
+      <div class="day-title-row"><h2>Potência</h2><span class="rest-chip">Descanso ~2–3min</span></div>
+      <p class="day-focus">Velocidade máxima de execução, baixo volume — nunca até falha.</p>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Jump squat carga leve</p>
+            <div class="ex-meta"><span class="meta-chip">4x</span><span class="meta-chip">3 reps</span><span class="meta-chip rest">Descanso 2–3min</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Hang pull técnico, carga moderada</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">3 reps</span><span class="meta-chip rest">Descanso 2–3min</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Sprint curto / aceleração</p>
+            <div class="ex-meta"><span class="meta-chip">4x</span><span class="meta-chip">10m</span><span class="meta-chip rest">Descanso 90–120s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Salto horizontal (broad jump) — aterrissagem controlada</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">4 reps</span><span class="meta-chip rest">Descanso 2min</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="qui-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="day-footer"><div><label>Observações</label><input class="fill-line" type="text"></div></div>
+    </section>
+
+    <!-- SEXTA -->
+    <section class="day-section" id="dia-sex">
+      <div class="day-title-row"><h2>Resistência / Força Geral</h2><span class="rest-chip">Descanso ~45–75s</span></div>
+      <p class="day-focus">Viés corretivo à direita — volume extra de quadril nos exercícios unilaterais.</p>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Agachamento búlgaro</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">10–12 reps/lado</span><span class="meta-chip rest">Descanso 60–75s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-1"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Elevação pélvica unilateral com carga <span class="side-tag d">+D</span></p>
+            <div class="ex-meta"><span class="meta-chip">3x (D: 4x)</span><span class="meta-chip">10 reps/lado</span><span class="meta-chip rest">Descanso 60s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-2"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Abdução de quadril em polia/caneleira <span class="side-tag d">+D</span></p>
+            <div class="ex-meta"><span class="meta-chip">3x (D: 4x)</span><span class="meta-chip">15 reps/lado</span><span class="meta-chip rest">Descanso 45–60s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-3"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Step-up altura moderada</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">10 reps/lado</span><span class="meta-chip rest">Descanso 60s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-4"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-top">
+          <button class="ex-thumb" onclick="abrirVideo(this)">▶</button>
+          <div class="ex-info">
+            <p class="ex-name">Prancha lateral dinâmica</p>
+            <div class="ex-meta"><span class="meta-chip">3x</span><span class="meta-chip">12 reps/lado</span><span class="meta-chip rest">Descanso 45s</span></div>
+          </div>
+        </div>
+        <div class="ex-video-row"><input class="video-input" type="text" placeholder="Link do YouTube" data-vid="sex-5"><button class="video-go" onclick="abrirVideo(this)">Ir</button></div>
+        <div class="ex-log-row"><span class="label">Semanas</span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span><span class="log-dot" onclick="toggleDot(this)"></span></div>
+      </div>
+
+      <div class="day-footer"><div><label>Observações</label><input class="fill-line" type="text"></div></div>
+    </section>
+
+  </div>
+
+  <footer class="credits">BeachMed System — Vila Real Fisioterapia e Pilates · complementar ao atendimento clínico</footer>
+
+</div>
+
+<script>
+  function mostrarDia(dia, btn){
+    document.querySelectorAll('.day-section').forEach(function(s){s.classList.remove('active');});
+    document.getElementById('dia-' + dia).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // Vídeos: salvar e recuperar do navegador
+  document.querySelectorAll('.video-input').forEach(function(input){
+    var key = 'beachmed-video-' + input.dataset.vid;
+    var saved = localStorage.getItem(key);
+    if(saved){ input.value = saved; }
+    input.addEventListener('change', function(){
+      localStorage.setItem(key, input.value.trim());
+    });
+  });
+
+  function abrirVideo(el){
+    var row = el.closest('.ex-card').querySelector('.video-input');
+    var url = row.value.trim();
+    if(!url){
+      row.focus();
+      return;
+    }
+    localStorage.setItem('beachmed-video-' + row.dataset.vid, url);
+    if(!/^https?:\/\//i.test(url)){ url = 'https://' + url; }
+    window.open(url, '_blank');
+  }
+
+  // Log de séries: salvar estado dos quadrados marcados
+  document.querySelectorAll('.log-dot').forEach(function(dot, i){
+    var card = dot.closest('.ex-card');
+    var name = card.querySelector('.video-input').dataset.vid;
+    var idx = Array.from(card.querySelectorAll('.log-dot')).indexOf(dot);
+    var key = 'beachmed-log-' + name + '-' + idx;
+    if(localStorage.getItem(key) === '1'){ dot.classList.add('checked'); }
+  });
+  function toggleDot(dot){
+    dot.classList.toggle('checked');
+    var card = dot.closest('.ex-card');
+    var name = card.querySelector('.video-input').dataset.vid;
+    var idx = Array.from(card.querySelectorAll('.log-dot')).indexOf(dot);
+    var key = 'beachmed-log-' + name + '-' + idx;
+    localStorage.setItem(key, dot.classList.contains('checked') ? '1' : '0');
+  }
+</script>
+
+</body>
+</html>
